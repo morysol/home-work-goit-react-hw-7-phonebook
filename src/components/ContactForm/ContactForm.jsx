@@ -2,9 +2,22 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
 
+import { addContact } from 'redux/operations';
+
+// export const TaskForm = () => {
+//   const dispatch = useDispatch();
+//   const handleSubmit = event => {
+//     event.preventDefault();
+//     const form = event.target;
+//     dispatch(addTask(event.target.elements.text.value));
+//     form.reset();
+//   };
+//   // Остальное код компонента
+// };
+
 //
 // import { save } from '../../tools/storage/storage';
-import { addContact } from '../../redux/contactsSlice';
+// import { addContact } from '../../redux/contactsSlice';
 
 import { AddButton, InputField, Form } from '../ContactForm/ContactForm.styled';
 
@@ -37,7 +50,9 @@ const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact({ id: name, name, number }));
+    // dispatch(addTask(event.target.elements.text.value));
+    // dispatch(addContact({ id: name, name, number }));
+    dispatch(addContact({ name, phone: number }));
   };
 
   const handleChange = event => {

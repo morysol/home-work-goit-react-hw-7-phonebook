@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTasks } from 'redux/operations';
-import { getContacts } from 'redux/selectors';
+import { fetchContacts } from 'redux/operations';
+import { selectContactsError, selectContactsisLoading } from 'redux/selectors';
 
 import { ContactsList } from './ContactsList/ContactsList';
 import ContactForm from './ContactForm/ContactForm';
@@ -14,7 +14,9 @@ export const App = () => {
   // Получаем части состояния
   // const { items, isLoading, error } = useSelector(getContacts);
   // const { items, isLoading, error } = useSelector(getContacts);
-  const { isLoading, error } = useSelector(getContacts);
+  // const { isLoading, error } = useSelector(selectContacts);
+  const isLoading = useSelector(selectContactsisLoading);
+  const error = useSelector(selectContactsError);
 
   // console.log(items);
   // console.log(isLoading);
@@ -22,7 +24,7 @@ export const App = () => {
 
   // Вызываем операцию
   useEffect(() => {
-    dispatch(fetchTasks());
+    dispatch(fetchContacts());
   }, [dispatch]);
 
   return (
@@ -34,7 +36,7 @@ export const App = () => {
       <SearchFilter />
       <ContactsList />
       {isLoading && <p>Loading contacts...</p>}
-      {error && <p>{error}</p>}
+      {error && <p>Fetching error, server says: {error}</p>}
     </Container>
   );
 };

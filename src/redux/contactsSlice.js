@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchContacts, addContact, removeContact } from './operations';
 
 const initialState = {
   items: [],
@@ -10,43 +11,79 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    fetchingInProgress(state) {
+    // fetchingInProgress(state) {
+    //   state.isLoading = true;
+    // },
+    // fetchingSuccess(state, action) {
+    //   state.isLoading = false;
+    //   state.error = null;
+    //   state = {
+    //     ...state,
+    //     items: [...state.items, action.payload],
+    //   };
+    // },
+    // fetchingError(state, action) {
+    //   state.isLoading = false;
+    //   state.error = action.payload;
+    // },
+    // addContact(state, action) {
+    //   return {
+    //     ...state,
+    //     items: [...state.items, action.payload],
+    //   };
+    // },
+    // removeContact(state, action) {
+    //   return {
+    //     ...state,
+    //     items: state.items.filter(item => item.id !== action.payload),
+    //   };
+    // },
+  },
+  extraReducers: {
+    //
+    [fetchContacts.pending](state) {
       state.isLoading = true;
     },
-    fetchingSuccess(state, action) {
+    [fetchContacts.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
-      // state.items = action.payload;
-      // state.items.push(action.payload);
-      state = {
-        ...state,
-        items: [...state.items, action.payload],
-      };
+      // state = {
+      //   ...state,
+      //   items: [...state.items, action.payload],
+      // };
+      state.items = action.payload;
     },
-    fetchingError(state, action) {
+    [fetchContacts.rejected](state, action) {
       state.isLoading = false;
       state.error = action.payload;
     },
-    addContact(state, action) {
-      return {
-        ...state,
-        items: [...state.items, action.payload],
-      };
+    [addContact.pending](state) {
+      state.isLoading = true;
     },
-    removeContact(state, action) {
-      return {
-        ...state,
-        items: state.items.filter(item => item.id !== action.payload),
-      };
+    [addContact.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items.push(action.payload);
+    },
+    [addContact.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [removeContact.pending](state) {
+      state.isLoading = true;
+    },
+    [removeContact.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const index = state.items.findIndex(task => task.id === action.payload);
+      state.items.splice(index, 1);
+    },
+    [removeContact.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
 
-export const {
-  fetchingInProgress,
-  fetchingSuccess,
-  fetchingError,
-  addContact,
-  removeContact,
-} = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
